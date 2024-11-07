@@ -152,7 +152,7 @@
         <!-- Leaderboard -->
         <div class="leaderboard" id="leaderboard">
             <h3>Leaderboard</h3>
-            <div id="leaderboard-content">No scores yet</div>
+            <div id="leaderboard-content">Loading...</div>
         </div>
     </div>
 
@@ -167,17 +167,8 @@
         let answeredPhotos = new Set();
         const totalPhotos = document.querySelectorAll('.gallery-item').length;
 
-        // Load leaderboard from local storage
-        function loadLeaderboard() {
-            const storedData = localStorage.getItem("leaderboard");
-            const leaderboard = document.getElementById("leaderboard-content");
-            leaderboard.innerHTML = storedData || "No scores yet";
-        }
-
         function openQuizPopup(item) {
-            // Check if photo is already answered
             if (answeredPhotos.has(item)) return;
-
             document.getElementById('quizPopup').style.display = 'block';
             window.currentItem = item;
         }
@@ -189,43 +180,50 @@
 
             if (correctness === 'correct') {
                 score++;
-                img.classList.add("revealed"); // Remove blur
-            }
-
-            if (music.paused) {
+                img.classList.add("revealed");
                 music.play();
-            } else {
-                music.currentTime = 0;
             }
-
-            // Mark this photo as answered
+            
             answeredPhotos.add(window.currentItem);
 
-            // Check if all photos have been answered
             if (answeredPhotos.size === totalPhotos) {
                 displayScore();
             }
         }
 
         function displayScore() {
-            let message;
-            if (score === totalPhotos) message = `${score}/${totalPhotos} You know her perfectly!`;
-            else if (score >= totalPhotos / 2) message = `${score}/${totalPhotos} You know her quite well!`;
-            else message = `${score}/${totalPhotos} You don’t know her that well!`;
-
-            alert(`Quiz completed! Your score: ${score}/${totalPhotos}\n${message}`);
-            addToLeaderboard(prompt("Enter your name:"), score);
+            let name = prompt("Enter your name:");
+            if (name) {
+                addScoreToLeaderboard(name, score);
+            }
         }
 
-        function addToLeaderboard(name, score) {
-            const leaderboard = document.getElementById("leaderboard-content");
-            leaderboard.innerHTML += `<p>${name}: ${score}/${totalPhotos}</p>`;
-
-            // Save to local storage
-            localStorage.setItem("leaderboard", leaderboard.innerHTML);
+        async function loadLeaderboard() {
+            try {
+                const response = await fetch('https://raw.githubusercontent.com/username/helena-leaderboard/main/leaderboard.json');
+                const leaderboardData = await response.json();
+                displayLeaderboard(leaderboardData);
+            } catch (error) {
+                console.error("Failed to load leaderboard:", error);
+            }
         }
 
-        // Initialize leaderboard on load
+        function displayLeaderboard(data) {
+            const leaderboardContent = document.getElementById("leaderboard-content");
+            leaderboardContent.innerHTML = ''; // Clear existing data
+
+            data.sort((a, b) => b.score - a.score);
+
+            data.forEach(entry => {
+                leaderboardContent.innerHTML += `<p>${entry.name}: ${entry.score}</p>`;
+            });
+        }
+
+        function addScoreToLeaderboard(name, score) {
+            // Update leaderboard.json on GitHub manually with new score
+            alert(`${name} scored ${score}. Please update the leaderboard.json file on GitHub manually to reflect this score.`);
+        }
+
         loadLeaderboard();
     </script>
 
