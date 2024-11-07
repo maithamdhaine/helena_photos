@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Congrats, HELENAAAAA!testttt</title>
+    <title>Congrats, HELENAAAAA!</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         /* General Styling */
@@ -66,7 +66,7 @@
         /* Gallery Styling */
         .gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Responsive columns */
+            grid-template-columns: repeat(2, 1fr); /* Force two columns */
             gap: 20px;
             justify-items: center;
         }
@@ -119,8 +119,11 @@
             footer p {
                 font-size: 0.7em;
             }
+            .gallery {
+                grid-template-columns: 1fr; /* Switch to single column on smaller screens */
+            }
             .gallery-item {
-                max-width: 150px;
+                max-width: 100%;
             }
         }
     </style>
@@ -129,7 +132,7 @@
 
     <!-- Header -->
     <header>
-        <h1>🎉 Congratulations, testtt  HELENAAAAA! 🎓</h1>
+        <h1>🎉 Congratulations, HELENAAAAA! 🎓</h1>
         <p>Celebrating your big day with laughter and memories!</p>
     </header>
 
