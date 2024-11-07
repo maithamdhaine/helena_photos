@@ -19,7 +19,7 @@
             flex-direction: column;
             align-items: center;
             padding: 20px;
-            background: url('testtttt backkkk.jfif') no-repeat center center fixed, #ffe4e6; /* Fallback color */
+            background: url('testtttt backkkk.jfif') no-repeat center center fixed, #ffe4e6;
             background-size: cover;
         }
 
@@ -56,8 +56,8 @@
 
         /* Content Container */
         .content {
-            margin-top: 80px; /* Space for fixed header */
-            margin-bottom: 60px; /* Space for fixed footer */
+            margin-top: 80px;
+            margin-bottom: 60px;
             width: 100%;
             max-width: 1200px;
             padding: 10px;
@@ -66,7 +66,7 @@
         /* Gallery Styling */
         .gallery {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* Force two columns */
+            grid-template-columns: repeat(2, 1fr);
             gap: 20px;
             justify-items: center;
         }
@@ -78,15 +78,23 @@
             transition: transform 0.2s;
             width: 100%;
             max-width: 200px;
-            cursor: pointer; /* Change cursor to indicate it's clickable */
+            cursor: pointer;
         }
         .gallery-item:hover {
             transform: scale(1.05);
         }
+
+        /* Blurred image styling */
         .gallery-item img {
             width: 100%;
             border-radius: 10px;
+            filter: blur(15px); /* Initial blur */
+            transition: filter 0.3s ease; /* Smooth transition when blur is removed */
         }
+        .gallery-item img.revealed {
+            filter: blur(0); /* Removes blur */
+        }
+
         .caption {
             margin-top: 8px;
             font-size: 0.9em;
@@ -121,7 +129,7 @@
                 font-size: 0.7em;
             }
             .gallery {
-                grid-template-columns: 1fr; /* Switch to single column on smaller screens */
+                grid-template-columns: 1fr;
             }
             .gallery-item {
                 max-width: 100%;
@@ -144,31 +152,38 @@
     <!-- Content -->
     <div class="content">
         <div class="gallery">
-            <div class="gallery-item" onclick="playMusic()">
+            <div class="gallery-item" onclick="revealPhoto(this)">
                 <img src="photo1.jfif" alt="Funny photo 1">
                 <div class="caption">"Bread so fresh, I just had to show it off! 🍞💁‍♀️"</div>
             </div>
-            <div class="gallery-item" onclick="playMusic()">
+            <div class="gallery-item" onclick="revealPhoto(this)">
                 <img src="photo2.jfif" alt="Funny photo 2">
                 <div class="caption">"That moment when you realize you forgot to turn the oven off. 😬🔥"</div>
             </div>
-            <div class="gallery-item" onclick="playMusic()">
+            <div class="gallery-item" onclick="revealPhoto(this)">
                 <img src="photo3.jfif" alt="Funny photo 3">
                 <div class="caption">"Party vibes always! 🎉"</div>
             </div>
-            <div class="gallery-item" onclick="playMusic()">
-                <img src="photo4.jfif" alt="Funny photo 3">
-                <div class="caption">"Party vibes always! 🎉"</div>
+            <div class="gallery-item" onclick="revealPhoto(this)">
+                <img src="photo4.jfif" alt="Funny photo 4">
+                <div class="caption">"Celebration mode on! 🎉"</div>
             </div>
-            <div class="gallery-item" onclick="playMusic()">
-                <img src="photo5.jfif" alt="Funny photo 3">
-                <div class="caption">"Party vibes always! 🎉"</div>
+            <div class="gallery-item" onclick="revealPhoto(this)">
+                <img src="photo5.jfif" alt="Funny photo 4">
+                <div class="caption">"Celebration mode on! 🎉"</div>
             </div>
-            <div class="gallery-item" onclick="playMusic()">
-                <img src="photo6.jfif" alt="Funny photo 3">
-                <div class="caption">"Party vibes always! 🎉"</div>
+            <div class="gallery-item" onclick="revealPhoto(this)">
+                <img src="photo6.jfif" alt="Funny photo 4">
+                <div class="caption">"Celebration mode on! 🎉"</div>
             </div>
-            <!-- Add more photos here with corresponding links -->
+            <div class="gallery-item" onclick="revealPhoto(this)">
+                <img src="photo7.jfif" alt="Funny photo 4">
+                <div class="caption">"Celebration mode on! 🎉"</div>
+            </div>
+            <div class="gallery-item" onclick="revealPhoto(this)">
+                <img src="photo8.jfif" alt="Funny photo 4">
+                <div class="caption">"Celebration mode on! 🎉"</div>
+            </div>
         </div>
     </div>
 
@@ -180,13 +195,19 @@
     </footer>
 
     <script>
-        function playMusic() {
+        function revealPhoto(item) {
             const music = document.getElementById("background-music");
+            const img = item.querySelector("img");
+
+            // Play music when a photo is clicked
             if (music.paused) {
                 music.play();
             } else {
-                music.currentTime = 0; // Reset to the beginning if already playing
+                music.currentTime = 0;
             }
+
+            // Remove the blur effect
+            img.classList.add("revealed");
         }
     </script>
 
