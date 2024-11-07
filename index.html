@@ -22,7 +22,39 @@
             background: url('testtttt backkkk.jfif') no-repeat center center fixed, #ffe4e6;
             background-size: cover;
         }
-
+        
+        /* Popup Styling */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 2000;
+            text-align: center;
+            width: 80%;
+            max-width: 300px;
+        }
+        .popup h2 {
+            margin-bottom: 15px;
+        }
+        .popup button {
+            margin: 5px;
+            padding: 10px 15px;
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .popup button:hover {
+            background-color: #ff87c6;
+        }
+        
         /* Header and Footer Styling */
         header, footer {
             background-color: #ff69b4;
@@ -32,38 +64,14 @@
             padding: 10px 5px;
             box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
         }
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1000;
-        }
-        footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            z-index: 1000;
-        }
-        header h1 {
-            font-size: 1.5em;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-        header p {
-            font-size: 0.9em;
-            font-weight: 300;
-        }
-
-        /* Content Container */
+        
+        /* Gallery and Leaderboard Styling */
         .content {
             margin-top: 80px;
-            margin-bottom: 60px;
+            margin-bottom: 100px;
             width: 100%;
             max-width: 1200px;
-            padding: 10px;
         }
-
-        /* Gallery Styling */
         .gallery {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -80,66 +88,28 @@
             max-width: 200px;
             cursor: pointer;
         }
-        .gallery-item:hover {
-            transform: scale(1.05);
-        }
-
-        /* Blurred image styling */
         .gallery-item img {
             width: 100%;
             border-radius: 10px;
-            filter: blur(15px); /* Initial blur */
-            transition: filter 0.3s ease; /* Smooth transition when blur is removed */
+            filter: blur(15px);
         }
         .gallery-item img.revealed {
-            filter: blur(0); /* Removes blur */
+            filter: blur(0);
         }
-
-        .caption {
-            margin-top: 8px;
-            font-size: 0.9em;
-            color: #ff69b4;
-            font-weight: 400;
+        .leaderboard {
+            margin-top: 20px;
+            width: 80%;
+            max-width: 500px;
             text-align: center;
-        }
-
-        /* Footer Styling */
-        footer p {
-            margin: 5px 0;
-            font-size: 0.75em;
-        }
-        footer p a {
-            color: #ffe4e6;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        footer p a:hover {
-            text-decoration: underline;
-        }
-
-        /* Responsive Adjustments */
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 1.3em;
-            }
-            header p {
-                font-size: 0.8em;
-            }
-            footer p {
-                font-size: 0.7em;
-            }
-            .gallery {
-                grid-template-columns: 1fr;
-            }
-            .gallery-item {
-                max-width: 100%;
-            }
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
         }
     </style>
 </head>
 <body>
 
-    <!-- Background Music (hidden by default) -->
     <audio id="background-music" src="mp3.mp3"></audio>
 
     <!-- Header -->
@@ -149,65 +119,86 @@
         <p>Celebrating your big day with laughter and memories!</p>
     </header>
 
+    <!-- Popup for Quiz -->
+    <div class="popup" id="quizPopup">
+        <h2>Where does Helena live?</h2>
+        <button onclick="answerQuiz(this, 'correct')">Residenza Cavour</button>
+        <button onclick="answerQuiz(this, 'wrong')">Residenza Lingotto</button>
+        <button onclick="answerQuiz(this, 'wrong')">Residenza Olimpia</button>
+        <button onclick="answerQuiz(this, 'wrong')">Residenza Mollino</button>
+    </div>
+
     <!-- Content -->
     <div class="content">
         <div class="gallery">
-            <div class="gallery-item" onclick="revealPhoto(this)">
+            <div class="gallery-item" onclick="openQuizPopup(this)">
                 <img src="photo1.jfif" alt="Funny photo 1">
                 <div class="caption">"Bread so fresh, I just had to show it off! 🍞💁‍♀️"</div>
             </div>
-            <div class="gallery-item" onclick="revealPhoto(this)">
-                <img src="photo2.jfif" alt="Funny photo 2">
-                <div class="caption">"That moment when you realize you forgot to turn the oven off. 😬🔥"</div>
-            </div>
-            <div class="gallery-item" onclick="revealPhoto(this)">
-                <img src="photo3.jfif" alt="Funny photo 3">
-                <div class="caption">"Party vibes always! 🎉"</div>
-            </div>
-            <div class="gallery-item" onclick="revealPhoto(this)">
-                <img src="photo4.jfif" alt="Funny photo 4">
-                <div class="caption">"Celebration mode on! 🎉"</div>
-            </div>
-            <div class="gallery-item" onclick="revealPhoto(this)">
-                <img src="photo5.jfif" alt="Funny photo 4">
-                <div class="caption">"Celebration mode on! 🎉"</div>
-            </div>
-            <div class="gallery-item" onclick="revealPhoto(this)">
-                <img src="photo6.jfif" alt="Funny photo 4">
-                <div class="caption">"Celebration mode on! 🎉"</div>
-            </div>
-            <div class="gallery-item" onclick="revealPhoto(this)">
-                <img src="photo7.jfif" alt="Funny photo 4">
-                <div class="caption">"Celebration mode on! 🎉"</div>
-            </div>
-            <div class="gallery-item" onclick="revealPhoto(this)">
-                <img src="photo8.jfif" alt="Funny photo 4">
-                <div class="caption">"Celebration mode on! 🎉"</div>
-            </div>
+            <!-- Add more gallery items here with unique onclick -->
+        </div>
+
+        <!-- Leaderboard -->
+        <div class="leaderboard" id="leaderboard">
+            <h3>Leaderboard</h3>
+            <div id="leaderboard-content">No scores yet</div>
         </div>
     </div>
 
     <!-- Footer -->
     <footer>
-        <h3>Made with ❤️ by your best friends</h3>
-        <h3> Divina And Gaia Idea </h3>
-        <h3><a href="https://www.instagram.com/maithamdhaine" target="_blank">Follow me for more fun!</a></h3>
+        <p>Made with ❤️ by your best friends</p>
+        <p><a href="https://www.instagram.com/maithamdhaine" target="_blank">Follow me for more fun!</a></p>
     </footer>
 
     <script>
-        function revealPhoto(item) {
-            const music = document.getElementById("background-music");
-            const img = item.querySelector("img");
+        let score = 0;
+        let answeredQuestions = 0;
 
-            // Play music when a photo is clicked
+        function openQuizPopup(item) {
+            // Show quiz popup
+            document.getElementById('quizPopup').style.display = 'block';
+            window.currentItem = item;
+        }
+
+        function answerQuiz(button, correctness) {
+            document.getElementById('quizPopup').style.display = 'none';
+            const music = document.getElementById("background-music");
+
+            if (correctness === 'correct') {
+                // Increment score for a correct answer
+                score++;
+                window.currentItem.querySelector("img").classList.add("revealed");
+            }
+
+            // Play music for each photo click
             if (music.paused) {
                 music.play();
             } else {
                 music.currentTime = 0;
             }
 
-            // Remove the blur effect
-            img.classList.add("revealed");
+            answeredQuestions++;
+
+            if (answeredQuestions >= 6) {
+                displayScore();
+            }
+        }
+
+        function displayScore() {
+            let message;
+            if (score === 6) message = "6/6 You know her perfectly!";
+            else if (score >= 4) message = `${score}/6 You know her quite well!`;
+            else if (score >= 2) message = `${score}/6 You know her a bit!`;
+            else message = `${score}/6 You don’t know her that well!`;
+
+            alert(`Quiz completed! Your score: ${score}/6\n${message}`);
+            addToLeaderboard(prompt("Enter your name:"), score);
+        }
+
+        function addToLeaderboard(name, score) {
+            const leaderboard = document.getElementById("leaderboard-content");
+            leaderboard.innerHTML += `<p>${name}: ${score}/6</p>`;
         }
     </script>
 
