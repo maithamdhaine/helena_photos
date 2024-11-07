@@ -22,7 +22,7 @@
             background: url('testtttt backkkk.jfif') no-repeat center center fixed, #ffe4e6;
             background-size: cover;
         }
-        
+
         /* Popup Styling */
         .popup {
             display: none;
@@ -64,7 +64,7 @@
             padding: 10px 5px;
             box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
         }
-        
+
         /* Gallery and Leaderboard Styling */
         .content {
             margin-top: 80px;
@@ -122,10 +122,10 @@
     <!-- Popup for Quiz -->
     <div class="popup" id="quizPopup">
         <h2>Where does Helena live?</h2>
-        <button onclick="answerQuiz(this, 'correct')">Residenza Cavour</button>
-        <button onclick="answerQuiz(this, 'wrong')">Residenza Lingotto</button>
-        <button onclick="answerQuiz(this, 'wrong')">Residenza Olimpia</button>
-        <button onclick="answerQuiz(this, 'wrong')">Residenza Mollino</button>
+        <button onclick="answerQuiz('correct')">Residenza Cavour</button>
+        <button onclick="answerQuiz('wrong')">Residenza Lingotto</button>
+        <button onclick="answerQuiz('wrong')">Residenza Olimpia</button>
+        <button onclick="answerQuiz('wrong')">Residenza Mollino</button>
     </div>
 
     <!-- Content -->
@@ -135,7 +135,19 @@
                 <img src="photo1.jfif" alt="Funny photo 1">
                 <div class="caption">"Bread so fresh, I just had to show it off! 🍞💁‍♀️"</div>
             </div>
-            <!-- Add more gallery items here with unique onclick -->
+            <div class="gallery-item" onclick="openQuizPopup(this)">
+                <img src="photo2.jfif" alt="Funny photo 2">
+                <div class="caption">"That moment when you realize you forgot to turn the oven off. 😬🔥"</div>
+            </div>
+            <div class="gallery-item" onclick="openQuizPopup(this)">
+                <img src="photo3.jfif" alt="Funny photo 3">
+                <div class="caption">"Party vibes always! 🎉"</div>
+            </div>
+            <div class="gallery-item" onclick="openQuizPopup(this)">
+                <img src="photo4.jfif" alt="Funny photo 4">
+                <div class="caption">"Celebration mode on! 🎉"</div>
+            </div>
+            <!-- Add more photos here as needed -->
         </div>
 
         <!-- Leaderboard -->
@@ -155,23 +167,29 @@
         let score = 0;
         let answeredQuestions = 0;
 
+        // Load leaderboard from local storage
+        function loadLeaderboard() {
+            const storedData = localStorage.getItem("leaderboard");
+            const leaderboard = document.getElementById("leaderboard-content");
+            leaderboard.innerHTML = storedData || "No scores yet";
+        }
+
         function openQuizPopup(item) {
-            // Show quiz popup
             document.getElementById('quizPopup').style.display = 'block';
             window.currentItem = item;
         }
 
-        function answerQuiz(button, correctness) {
+        function answerQuiz(correctness) {
             document.getElementById('quizPopup').style.display = 'none';
             const music = document.getElementById("background-music");
+            const img = window.currentItem.querySelector("img");
 
+            // Handle correct answer
             if (correctness === 'correct') {
-                // Increment score for a correct answer
                 score++;
-                window.currentItem.querySelector("img").classList.add("revealed");
+                img.classList.add("revealed"); // Remove blur
             }
 
-            // Play music for each photo click
             if (music.paused) {
                 music.play();
             } else {
@@ -180,6 +198,7 @@
 
             answeredQuestions++;
 
+            // Display final score if all questions answered
             if (answeredQuestions >= 6) {
                 displayScore();
             }
@@ -199,7 +218,13 @@
         function addToLeaderboard(name, score) {
             const leaderboard = document.getElementById("leaderboard-content");
             leaderboard.innerHTML += `<p>${name}: ${score}/6</p>`;
+
+            // Save to local storage
+            localStorage.setItem("leaderboard", leaderboard.innerHTML);
         }
+
+        // Initialize leaderboard on load
+        loadLeaderboard();
     </script>
 
 </body>
