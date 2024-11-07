@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Congrats, HELENAAAAA!   test</title>
+    <title>Congrats, HELENAAAAA! test</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         /* General Styling */
@@ -50,6 +50,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
         .popup button.correct {
             background-color: #4CAF50; /* Green for correct */
@@ -202,6 +203,7 @@
             questionElement.innerText = question;
             buttons.forEach((button, index) => {
                 button.innerText = answers[index];
+                button.className = ''; // Reset button classes
                 button.onclick = () => answerQuiz(button, index === correctIndex ? 'correct' : 'wrong');
             });
 
@@ -211,24 +213,26 @@
         }
 
         function answerQuiz(button, correctness) {
-            document.getElementById('quizPopup').style.display = 'none';
+            const quizPopup = document.getElementById('quizPopup');
             const music = document.getElementById("background-music");
             const img = window.currentItem.querySelector("img");
             const overlay = window.currentItem.querySelector(".incorrect-overlay");
 
+            // Set the color and behavior based on answer correctness
             if (correctness === 'correct') {
-                button.classList.add('correct');
-                img.classList.add("revealed");
-                music.play();
+                button.classList.add('correct'); // Highlight correct answer in green
+                img.classList.add("revealed"); // Remove blur on correct answer
+                music.play(); // Play sound
             } else {
-                button.classList.add('wrong');
-                overlay.classList.add("show-incorrect");
+                button.classList.add('wrong'); // Highlight wrong answer in red
+                overlay.classList.add("show-incorrect"); // Show incorrect overlay
                 setTimeout(() => {
                     overlay.classList.remove("show-incorrect");
-                }, 3000); // Show incorrect overlay for 3 seconds
+                }, 7000); // Show incorrect overlay for 3 seconds
             }
 
-            answeredPhotos.add(window.currentItem);
+            quizPopup.style.display = 'none'; // Close popup after answering
+            answeredPhotos.add(window.currentItem); // Mark the photo as answered
         }
     </script>
 
