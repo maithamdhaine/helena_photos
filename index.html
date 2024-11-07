@@ -65,7 +65,7 @@
             box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
         }
 
-        /* Gallery and Leaderboard Styling */
+        /* Gallery Styling */
         .content {
             margin-top: 80px;
             margin-bottom: 100px;
@@ -87,6 +87,7 @@
             width: 100%;
             max-width: 200px;
             cursor: pointer;
+            position: relative;
         }
         .gallery-item img {
             width: 100%;
@@ -96,15 +97,27 @@
         .gallery-item img.revealed {
             filter: blur(0);
         }
-        .leaderboard {
-            margin-top: 20px;
-            width: 80%;
-            max-width: 500px;
-            text-align: center;
-            background-color: #fff;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+
+        /* Red X for Wrong Answer */
+        .wrong-answer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: red;
+            font-size: 4em;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        .show-wrong {
+            opacity: 1;
+            animation: fadeOut 1s ease forwards;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
         }
     </style>
 </head>
@@ -134,25 +147,23 @@
             <div class="gallery-item" onclick="openQuizPopup(this)">
                 <img src="photo1.jfif" alt="Funny photo 1">
                 <div class="caption">"Bread so fresh, I just had to show it off! 🍞💁‍♀️"</div>
+                <div class="wrong-answer">X</div>
             </div>
             <div class="gallery-item" onclick="openQuizPopup(this)">
                 <img src="photo2.jfif" alt="Funny photo 2">
                 <div class="caption">"That moment when you realize you forgot to turn the oven off. 😬🔥"</div>
+                <div class="wrong-answer">X</div>
             </div>
             <div class="gallery-item" onclick="openQuizPopup(this)">
                 <img src="photo3.jfif" alt="Funny photo 3">
                 <div class="caption">"Party vibes always! 🎉"</div>
+                <div class="wrong-answer">X</div>
             </div>
             <div class="gallery-item" onclick="openQuizPopup(this)">
                 <img src="photo4.jfif" alt="Funny photo 4">
                 <div class="caption">"Celebration mode on! 🎉"</div>
+                <div class="wrong-answer">X</div>
             </div>
-        </div>
-
-        <!-- Leaderboard -->
-        <div class="leaderboard" id="leaderboard">
-            <h3>Leaderboard</h3>
-            <div id="leaderboard-content">Loading...</div>
         </div>
     </div>
 
@@ -163,12 +174,10 @@
     </footer>
 
     <script>
-        let score = 0;
         let answeredPhotos = new Set();
-        const totalPhotos = document.querySelectorAll('.gallery-item').length;
 
         function openQuizPopup(item) {
-            if (answeredPhotos.has(item)) return;
+            if (answeredPhotos.has(item)) return; // Prevent re-answering
             document.getElementById('quizPopup').style.display = 'block';
             window.currentItem = item;
         }
@@ -177,54 +186,20 @@
             document.getElementById('quizPopup').style.display = 'none';
             const music = document.getElementById("background-music");
             const img = window.currentItem.querySelector("img");
+            const wrongIndicator = window.currentItem.querySelector(".wrong-answer");
 
             if (correctness === 'correct') {
-                score++;
-                img.classList.add("revealed");
-                music.play();
+                img.classList.add("revealed"); // Remove blur on correct answer
+                music.play(); // Play sound only on correct answer
+            } else {
+                wrongIndicator.classList.add("show-wrong"); // Show red X on wrong answer
+                setTimeout(() => {
+                    wrongIndicator.classList.remove("show-wrong");
+                }, 1000); // Remove X after 1 second
             }
             
-            answeredPhotos.add(window.currentItem);
-
-            if (answeredPhotos.size === totalPhotos) {
-                displayScore();
-            }
+            answeredPhotos.add(window.currentItem); // Mark photo as answered
         }
-
-        function displayScore() {
-            let name = prompt("Enter your name:");
-            if (name) {
-                addScoreToLeaderboard(name, score);
-            }
-        }
-
-        async function loadLeaderboard() {
-            try {
-                const response = await fetch('https://raw.githubusercontent.com/username/helena-leaderboard/main/leaderboard.json');
-                const leaderboardData = await response.json();
-                displayLeaderboard(leaderboardData);
-            } catch (error) {
-                console.error("Failed to load leaderboard:", error);
-            }
-        }
-
-        function displayLeaderboard(data) {
-            const leaderboardContent = document.getElementById("leaderboard-content");
-            leaderboardContent.innerHTML = ''; // Clear existing data
-
-            data.sort((a, b) => b.score - a.score);
-
-            data.forEach(entry => {
-                leaderboardContent.innerHTML += `<p>${entry.name}: ${entry.score}</p>`;
-            });
-        }
-
-        function addScoreToLeaderboard(name, score) {
-            // Update leaderboard.json on GitHub manually with new score
-            alert(`${name} scored ${score}. Please update the leaderboard.json file on GitHub manually to reflect this score.`);
-        }
-
-        loadLeaderboard();
     </script>
 
 </body>
