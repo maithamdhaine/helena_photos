@@ -14,12 +14,13 @@
         }
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #ffe4e6;
             color: #4a4a4a;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 20px;
+            background: url('viewww.jfif') no-repeat center center fixed;
+            background-size: cover;
         }
 
         /* Header and Footer Styling */
@@ -28,7 +29,7 @@
             color: white;
             width: 100%;
             text-align: center;
-            padding: 20px 10px;
+            padding: 10px 5px; /* Further reduced padding */
             box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
         }
         header {
@@ -36,29 +37,27 @@
             top: 0;
             left: 0;
             z-index: 1000;
-            width: 100%;
         }
         footer {
             position: fixed;
             bottom: 0;
             left: 0;
             z-index: 1000;
-            width: 100%;
         }
         header h1 {
-            font-size: 2.2em;
+            font-size: 1.5em; /* Smaller font size */
             font-weight: 600;
             margin-bottom: 5px;
         }
         header p {
-            font-size: 1.1em;
+            font-size: 0.9em; /* Smaller font size */
             font-weight: 300;
         }
 
         /* Content Container */
         .content {
-            margin-top: 120px; /* Space for fixed header */
-            margin-bottom: 80px; /* Space for fixed footer */
+            margin-top: 80px; /* Space for fixed header */
+            margin-bottom: 60px; /* Space for fixed footer */
             width: 100%;
             max-width: 1200px;
             padding: 10px;
@@ -67,7 +66,7 @@
         /* Gallery Styling */
         .gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Two photos per row on larger screens */
             gap: 20px;
             justify-items: center;
         }
@@ -98,6 +97,7 @@
         /* Footer Styling */
         footer p {
             margin: 5px 0;
+            font-size: 0.75em; /* Smaller font size */
         }
         footer p a {
             color: #ffe4e6;
@@ -108,13 +108,16 @@
             text-decoration: underline;
         }
 
-        /* Responsive */
+        /* Responsive Adjustments */
         @media (max-width: 768px) {
             header h1 {
-                font-size: 1.5em;
+                font-size: 1.3em;
             }
             header p {
-                font-size: 1em;
+                font-size: 0.8em;
+            }
+            footer p {
+                font-size: 0.7em;
             }
             .gallery-item {
                 max-width: 150px;
