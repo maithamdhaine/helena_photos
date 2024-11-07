@@ -78,6 +78,7 @@
             transition: transform 0.2s;
             width: 100%;
             max-width: 200px;
+            cursor: pointer; /* Change cursor to indicate it's clickable */
         }
         .gallery-item:hover {
             transform: scale(1.05);
@@ -130,6 +131,9 @@
 </head>
 <body>
 
+    <!-- Background Music (hidden by default) -->
+    <audio id="background-music" src="mp3.mp3"></audio>
+
     <!-- Header -->
     <header>
         <h1>🎉 Congratulations, HELENAAAAA! 🎓</h1>
@@ -139,31 +143,19 @@
     <!-- Content -->
     <div class="content">
         <div class="gallery">
-            <div class="gallery-item">
+            <div class="gallery-item" onclick="playMusic()">
                 <img src="photo1.jfif" alt="Funny photo 1">
                 <div class="caption">"Bread so fresh, I just had to show it off! 🍞💁‍♀️"</div>
             </div>
-            <div class="gallery-item">
+            <div class="gallery-item" onclick="playMusic()">
                 <img src="photo2.jfif" alt="Funny photo 2">
                 <div class="caption">"That moment when you realize you forgot to turn the oven off. 😬🔥"</div>
             </div>
-            <div class="gallery-item">
+            <div class="gallery-item" onclick="playMusic()">
                 <img src="photo3.jfif" alt="Funny photo 3">
                 <div class="caption">"Party vibes always! 🎉"</div>
             </div>
-            <div class="gallery-item">
-                <img src="photo4.jfif" alt="Funny photo 3">
-                <div class="caption">"Party vibes always! 🎉"</div>
-            </div>
-            <div class="gallery-item">
-                <img src="photo5.jfif" alt="Funny photo 3">
-                <div class="caption">"Party vibes always! 🎉"</div>
-            </div>
-            <div class="gallery-item">
-                <img src="photo6.jfif" alt="Funny photo 3">
-                <div class="caption">"Party vibes always! 🎉"</div>
-            </div>
-            <!-- Add more photos here -->
+            <!-- Add more photos here with corresponding links -->
         </div>
     </div>
 
@@ -172,6 +164,17 @@
         <p>Made with ❤️ by your best friends</p>
         <p><a href="https://www.instagram.com/henelaaa" target="_blank">Follow me for more fun!</a></p>
     </footer>
+
+    <script>
+        function playMusic() {
+            const music = document.getElementById("background-music");
+            if (music.paused) {
+                music.play();
+            } else {
+                music.currentTime = 0; // Reset to the beginning if already playing
+            }
+        }
+    </script>
 
 </body>
 </html>
