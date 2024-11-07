@@ -51,6 +51,12 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        .popup button.correct {
+            background-color: #4CAF50; /* Green for correct */
+        }
+        .popup button.wrong {
+            background-color: #FF4D4D; /* Red for incorrect */
+        }
         .popup button:hover {
             background-color: #ff87c6;
         }
@@ -98,22 +104,22 @@
             filter: blur(0);
         }
 
-        /* Red X for Wrong Answer */
-        .wrong-answer {
+        /* Incorrect Answer Overlay */
+        .incorrect-overlay {
+            display: none;
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: red;
-            font-size: 4em;
-            font-weight: bold;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('incorrect-image.jfif'); /* Replace with path to your incorrect image */
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
         }
-        .show-wrong {
-            opacity: 1;
-            animation: fadeOut 1s ease forwards;
+        .show-incorrect {
+            display: block;
+            animation: fadeOut 3s ease forwards;
         }
         @keyframes fadeOut {
             0% { opacity: 1; }
@@ -134,45 +140,45 @@
 
     <!-- Popup for Quiz -->
     <div class="popup" id="quizPopup">
-        <h2>Where does Helena live?</h2>
-        <button onclick="answerQuiz('wrong')">Residenza Cavour</button>
-        <button onclick="answerQuiz('correct')">Residenza Lingotto</button>
-        <button onclick="answerQuiz('wrong')">Residenza Olimpia</button>
-        <button onclick="answerQuiz('wrong')">Residenza Mollino</button>
+        <h2 id="question">Where does Helena live?</h2>
+        <button onclick="answerQuiz(this, 'wrong')">Residenza Cavour</button>
+        <button onclick="answerQuiz(this, 'correct')">Residenza Lingotto</button>
+        <button onclick="answerQuiz(this, 'wrong')">Residenza Olimpia</button>
+        <button onclick="answerQuiz(this, 'wrong')">Residenza Mollino</button>
     </div>
 
     <!-- Content -->
     <div class="content">
         <div class="gallery">
-            <div class="gallery-item" onclick="openQuizPopup(this)">
+            <div class="gallery-item" onclick="openQuizPopup(this, 'Where does Helena live?', ['Residenza Cavour', 'Residenza Lingotto', 'Residenza Olimpia', 'Residenza Mollino'], 1)">
                 <img src="photo1.jfif" alt="Funny photo 1">
                 <div class="caption">"Bread so fresh, I just had to show it off! 🍞💁‍♀️"</div>
-                <div class="wrong-answer">X</div>
+                <div class="incorrect-overlay"></div>
             </div>
-            <div class="gallery-item" onclick="openQuizPopup(this)">
+            <div class="gallery-item" onclick="openQuizPopup(this, 'Where is Helena from?', ['Calabria', 'Puglia', 'Torino', 'Sicily'], 0)">
                 <img src="photo2.jfif" alt="Funny photo 2">
-                <div class="caption">"That moment when you realize you forgot to turn the oven off. 😬🔥"</div>
-                <div class="wrong-answer">X</div>
+                <div class="caption">"Trying to blend in at the party store. 👓🧢"</div>
+                <div class="incorrect-overlay"></div>
             </div>
-            <div class="gallery-item" onclick="openQuizPopup(this)">
+            <div class="gallery-item" onclick="openQuizPopup(this, 'Who’s Helena’s best friend?', ['Karim Hasan', 'Gaia', 'Divina', 'Celeste'], 2)">
                 <img src="photo3.jfif" alt="Funny photo 3">
-                <div class="caption">"Party vibes always! 🎉"</div>
-                <div class="wrong-answer">X</div>
+                <div class="caption">"When the front camera surprises you. 📸🤯"</div>
+                <div class="incorrect-overlay"></div>
             </div>
-            <div class="gallery-item" onclick="openQuizPopup(this)">
+            <div class="gallery-item" onclick="openQuizPopup(this, 'What did she graduate in?', ['Computer Engineering', 'Languages', 'Biology', 'Communication Science'], 3)">
                 <img src="photo4.jfif" alt="Funny photo 4">
                 <div class="caption">"Celebration mode on! 🎉"</div>
-                <div class="wrong-answer">X</div>
+                <div class="incorrect-overlay"></div>
             </div>
-            <div class="gallery-item" onclick="openQuizPopup(this)">
-                <img src="photo5.jfif" alt="Funny photo 4">
-                <div class="caption">"Celebration mode on! 🎉"</div>
-                <div class="wrong-answer">X</div>
+            <div class="gallery-item" onclick="openQuizPopup(this, 'How old is Helena?', ['24', '25', '23', '22'], 0)">
+                <img src="photo5.jfif" alt="Funny photo 5">
+                <div class="caption">"All about those party vibes! 🎉"</div>
+                <div class="incorrect-overlay"></div>
             </div>
-            <div class="gallery-item" onclick="openQuizPopup(this)">
-                <img src="photo6.jfif" alt="Funny photo 4">
-                <div class="caption">"Celebration mode on! 🎉"</div>
-                <div class="wrong-answer">X</div>
+            <div class="gallery-item" onclick="openQuizPopup(this, 'Best side of Residenza?', ['West', 'East'], 1)">
+                <img src="photo6.jfif" alt="Funny photo 6">
+                <div class="caption">"Living the best life at Residenza. 🌇"</div>
+                <div class="incorrect-overlay"></div>
             </div>
         </div>
     </div>
@@ -186,29 +192,43 @@
     <script>
         let answeredPhotos = new Set();
 
-        function openQuizPopup(item) {
-            if (answeredPhotos.has(item)) return; // Prevent re-answering
-            document.getElementById('quizPopup').style.display = 'block';
+        function openQuizPopup(item, question, answers, correctIndex) {
+            if (answeredPhotos.has(item)) return;
+
+            const quizPopup = document.getElementById('quizPopup');
+            const questionElement = document.getElementById('question');
+            const buttons = quizPopup.querySelectorAll('button');
+
+            questionElement.innerText = question;
+            buttons.forEach((button, index) => {
+                button.innerText = answers[index];
+                button.onclick = () => answerQuiz(button, index === correctIndex ? 'correct' : 'wrong');
+            });
+
+            quizPopup.style.display = 'block';
             window.currentItem = item;
+            window.correctIndex = correctIndex;
         }
 
-        function answerQuiz(correctness) {
+        function answerQuiz(button, correctness) {
             document.getElementById('quizPopup').style.display = 'none';
             const music = document.getElementById("background-music");
             const img = window.currentItem.querySelector("img");
-            const wrongIndicator = window.currentItem.querySelector(".wrong-answer");
+            const overlay = window.currentItem.querySelector(".incorrect-overlay");
 
             if (correctness === 'correct') {
-                img.classList.add("revealed"); // Remove blur on correct answer
-                music.play(); // Play sound only on correct answer
+                button.classList.add('correct');
+                img.classList.add("revealed");
+                music.play();
             } else {
-                wrongIndicator.classList.add("show-wrong"); // Show red X on wrong answer
+                button.classList.add('wrong');
+                overlay.classList.add("show-incorrect");
                 setTimeout(() => {
-                    wrongIndicator.classList.remove("show-wrong");
-                }, 1000); // Remove X after 1 second
+                    overlay.classList.remove("show-incorrect");
+                }, 3000); // Show incorrect overlay for 3 seconds
             }
-            
-            answeredPhotos.add(window.currentItem); // Mark photo as answered
+
+            answeredPhotos.add(window.currentItem);
         }
     </script>
 
