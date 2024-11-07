@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Congrats, HELENAAAA!</title>
+    <title>Congrats, HELENAAAAA!</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         /* General Styling */
@@ -19,21 +19,31 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             padding: 20px;
         }
 
-        /* Header Styling */
-        header {
+        /* Header and Footer Styling */
+        header, footer {
             background-color: #ff69b4;
             color: white;
-            padding: 20px;
-            text-align: center;
             width: 100%;
-            max-width: 800px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+            text-align: center;
+            padding: 20px 10px;
             box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            width: 100%;
         }
         header h1 {
             font-size: 2.2em;
@@ -43,25 +53,32 @@
         header p {
             font-size: 1.1em;
             font-weight: 300;
-            color: #ffe4e6;
+        }
+
+        /* Content Container */
+        .content {
+            margin-top: 120px; /* Space for fixed header */
+            margin-bottom: 80px; /* Space for fixed footer */
+            width: 100%;
+            max-width: 1200px;
+            padding: 10px;
         }
 
         /* Gallery Styling */
         .gallery {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
-            max-width: 800px;
-            width: 100%;
+            justify-items: center;
         }
         .gallery-item {
-            width: 180px;
             background-color: white;
             padding: 15px;
             border-radius: 12px;
             box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
             transition: transform 0.2s;
+            width: 100%;
+            max-width: 200px;
         }
         .gallery-item:hover {
             transform: scale(1.05);
@@ -75,21 +92,10 @@
             font-size: 0.9em;
             color: #ff69b4;
             font-weight: 400;
+            text-align: center;
         }
 
         /* Footer Styling */
-        footer {
-            background-color: #ff69b4;
-            color: white;
-            padding: 15px;
-            text-align: center;
-            width: 100%;
-            max-width: 800px;
-            border-radius: 10px;
-            margin-top: 20px;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-            font-size: 0.9em;
-        }
         footer p {
             margin: 5px 0;
         }
@@ -101,31 +107,46 @@
         footer p a:hover {
             text-decoration: underline;
         }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.5em;
+            }
+            header p {
+                font-size: 1em;
+            }
+            .gallery-item {
+                max-width: 150px;
+            }
+        }
     </style>
 </head>
 <body>
 
     <!-- Header -->
     <header>
-        <h1>🎉 Congratulations, HELENAAAAAA! 🎓</h1>
+        <h1>🎉 Congratulations, HELENAAAAA! 🎓</h1>
         <p>Celebrating your big day with laughter and memories!</p>
     </header>
 
-    <!-- Gallery -->
-    <div class="gallery">
-        <div class="gallery-item">
-            <img src="photo1.jfif" alt="Funny photo 1">
-            <div class="Bread so fresh, I just had to show it off!!!!!">"Throwback to this moment 😂"</div>
+    <!-- Content -->
+    <div class="content">
+        <div class="gallery">
+            <div class="gallery-item">
+                <img src="photo1.jpg" alt="Funny photo 1">
+                <div class="caption">"Bread so fresh, I just had to show it off! 🍞💁‍♀️"</div>
+            </div>
+            <div class="gallery-item">
+                <img src="photo2.jpg" alt="Funny photo 2">
+                <div class="caption">"That moment when you realize you forgot to turn the oven off. 😬🔥"</div>
+            </div>
+            <div class="gallery-item">
+                <img src="photo3.jpg" alt="Funny photo 3">
+                <div class="caption">"Party vibes always! 🎉"</div>
+            </div>
+            <!-- Add more photos here -->
         </div>
-        <div class="gallery-item">
-            <img src="photo2.jpg" alt="Funny photo 2">
-            <div class="That moment when you realize you forgot to turn the oven off." 😬">"Almost a graduate... but not quite!"</div>
-        </div>
-        <div class="gallery-item">
-            <img src="photo3.jpg" alt="Funny photo 3">
-            <div class="caption">"Party vibes always! 🎉"</div>
-        </div>
-        <!-- Add more photos as needed -->
     </div>
 
     <!-- Footer -->
