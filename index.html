@@ -54,7 +54,7 @@
         .popup button:hover {
             background-color: #ff87c6;
         }
-        
+
         /* Header and Footer Styling */
         header, footer {
             background-color: #ff69b4;
@@ -122,8 +122,8 @@
     <!-- Popup for Quiz -->
     <div class="popup" id="quizPopup">
         <h2>Where does Helena live?</h2>
-        <button onclick="answerQuiz('correct')">Residenza Cavour</button>
-        <button onclick="answerQuiz('wrong')">Residenza Lingotto</button>
+        <button onclick="answerQuiz('wrong')">Residenza Cavour</button>
+        <button onclick="answerQuiz('correct')">Residenza Lingotto</button>
         <button onclick="answerQuiz('wrong')">Residenza Olimpia</button>
         <button onclick="answerQuiz('wrong')">Residenza Mollino</button>
     </div>
@@ -147,7 +147,6 @@
                 <img src="photo4.jfif" alt="Funny photo 4">
                 <div class="caption">"Celebration mode on! 🎉"</div>
             </div>
-            <!-- Add more photos here as needed -->
         </div>
 
         <!-- Leaderboard -->
@@ -165,7 +164,8 @@
 
     <script>
         let score = 0;
-        let answeredQuestions = 0;
+        let answeredPhotos = new Set();
+        const totalPhotos = document.querySelectorAll('.gallery-item').length;
 
         // Load leaderboard from local storage
         function loadLeaderboard() {
@@ -175,6 +175,9 @@
         }
 
         function openQuizPopup(item) {
+            // Check if photo is already answered
+            if (answeredPhotos.has(item)) return;
+
             document.getElementById('quizPopup').style.display = 'block';
             window.currentItem = item;
         }
@@ -184,7 +187,6 @@
             const music = document.getElementById("background-music");
             const img = window.currentItem.querySelector("img");
 
-            // Handle correct answer
             if (correctness === 'correct') {
                 score++;
                 img.classList.add("revealed"); // Remove blur
@@ -196,28 +198,28 @@
                 music.currentTime = 0;
             }
 
-            answeredQuestions++;
+            // Mark this photo as answered
+            answeredPhotos.add(window.currentItem);
 
-            // Display final score if all questions answered
-            if (answeredQuestions >= 6) {
+            // Check if all photos have been answered
+            if (answeredPhotos.size === totalPhotos) {
                 displayScore();
             }
         }
 
         function displayScore() {
             let message;
-            if (score === 6) message = "6/6 You know her perfectly!";
-            else if (score >= 4) message = `${score}/6 You know her quite well!`;
-            else if (score >= 2) message = `${score}/6 You know her a bit!`;
-            else message = `${score}/6 You don’t know her that well!`;
+            if (score === totalPhotos) message = `${score}/${totalPhotos} You know her perfectly!`;
+            else if (score >= totalPhotos / 2) message = `${score}/${totalPhotos} You know her quite well!`;
+            else message = `${score}/${totalPhotos} You don’t know her that well!`;
 
-            alert(`Quiz completed! Your score: ${score}/6\n${message}`);
+            alert(`Quiz completed! Your score: ${score}/${totalPhotos}\n${message}`);
             addToLeaderboard(prompt("Enter your name:"), score);
         }
 
         function addToLeaderboard(name, score) {
             const leaderboard = document.getElementById("leaderboard-content");
-            leaderboard.innerHTML += `<p>${name}: ${score}/6</p>`;
+            leaderboard.innerHTML += `<p>${name}: ${score}/${totalPhotos}</p>`;
 
             // Save to local storage
             localStorage.setItem("leaderboard", leaderboard.innerHTML);
